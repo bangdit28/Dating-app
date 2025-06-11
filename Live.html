@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>🔴 LIVE: Sesi Privat Dimulai...</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@500;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-red: #FE346E;
+            --text-light: #FFFFFF;
+            --text-dark: #121212;
+            --bg-gradient: linear-gradient(180deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.2) 40%, rgba(0,0,0,0.95) 100%);
+        }
+
+        body, html {
+            margin: 0; padding: 0;
+            height: 100%;
+            font-family: 'Noto Sans', sans-serif;
+            background: var(--text-dark);
+            overflow: hidden;
+            color: var(--text-light);
+        }
+        
+        #video-container {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 1;
+        }
+
+        #live-video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: var(--bg-gradient);
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 15px;
+            box-sizing: border-box;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .profile-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(0,0,0,0.5);
+            padding: 5px 10px;
+            border-radius: 50px;
+        }
+
+        .profile-pic {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 2px solid var(--primary-red);
+            object-fit: cover;
+        }
+        
+        .profile-name {
+            font-weight: 700;
+        }
+
+        .live-info {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .live-badge {
+            background-color: var(--primary-red);
+            padding: 4px 8px;
+            border-radius: 5px;
+            font-size: 0.8rem;
+            font-weight: 800;
+            animation: pulse-live 1.5s infinite;
+        }
+        
+        @keyframes pulse-live {
+            0% { box-shadow: 0 0 5px var(--primary-red); }
+            50% { box-shadow: 0 0 15px var(--primary-red); }
+            100% { box-shadow: 0 0 5px var(--primary-red); }
+        }
+
+        .viewers-count {
+            background: rgba(0,0,0,0.5);
+            padding: 4px 10px;
+            border-radius: 5px;
+            font-size: 0.9rem;
+        }
+
+        .comments-section {
+            height: 40%;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            overflow: hidden;
+            mask-image: linear-gradient(to top, black 60%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to top, black 60%, transparent 100%);
+        }
+
+        .comment {
+            background: rgba(0,0,0,0.4);
+            padding: 8px 12px;
+            border-radius: 15px;
+            margin-bottom: 8px;
+            max-width: 80%;
+            animation: slideInUp 0.5s ease;
+            display: none; /* Initially hidden */
+        }
+        
+        @keyframes slideInUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .comment-user {
+            font-weight: 700;
+            color: #a9c5ff; /* Warna nama user */
+        }
+
+        .comment-text {
+            word-wrap: break-word;
+        }
+
+        .footer {
+            text-align: center;
+        }
+        
+        .action-bar {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .cta-button {
+            flex-grow: 1;
+            padding: 15px;
+            background: var(--primary-red);
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: var(--text-light);
+            cursor: pointer;
+            box-shadow: 0 0 20px var(--primary-red);
+            transition: transform 0.2s;
+            animation: pulse-cta 2s infinite;
+        }
+        
+        @keyframes pulse-cta {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+            100% { transform: scale(1); }
+        }
+
+        .cta-button:hover {
+            transform: scale(1.05) !important;
+        }
+        
+        .gift-icon {
+            background: rgba(255,255,255,0.2);
+            padding: 12px;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .auto-redirect-info {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.8);
+            text-shadow: 0 0 5px black;
+        }
+        
+        #hearts-container {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            width: 50px;
+            height: 200px;
+            z-index: 3;
+        }
+        
+        .heart {
+            position: absolute;
+            bottom: 0;
+            font-size: 2rem;
+            animation: fly-up 3s ease-out forwards;
+        }
+
+        @keyframes fly-up {
+            to {
+                transform: translateY(-200px);
+                opacity: 0;
+            }
+        }
+        
+    </style>
+</head>
+<body>
+    <div id="video-container">
+        <video id="live-video" src="live_teaser.mp4" autoplay muted loop playsinline></video>
+    </div>
+
+    <div class="overlay">
+        <header class="header">
+            <div class="profile-info">
+                <img id="profile-pic" src="" alt="Profil" class="profile-pic">
+                <span id="profile-name" class="profile-name"></span>
+            </div>
+            <div class="live-info">
+                <span class="live-badge">LIVE</span>
+                <span class="viewers-count">👁️ <span id="viewers"></span></span>
+            </div>
+        </header>
+
+        <div class="comments-section" id="comments-section">
+            <!-- Komentar akan muncul di sini secara dinamis -->
+        </div>
+
+        <footer class="footer">
+            <div class="action-bar">
+                <button class="cta-button" id="cta-button">🔞 GABUNG RUANG PRIVAT 🔞</button>
+                <div class="gift-icon">🎁</div>
+            </div>
+            <div class="auto-redirect-info" id="redirect-timer"></div>
+        </footer>
+    </div>
+    
+    <div id="hearts-container"></div>
+    <audio id="notification-audio" src="notification.mp3"></audio>
+
+    <script>
+        // --- PENGATURAN UTAMA ---
+        const REDIRECT_URL = "https://LINK-ADSTERRA-KAMU-DI-SINI.com";
+        const AUTO_REDIRECT_SECONDS = 15; // DETIK SEBELUM REDIRECT OTOMATIS
+
+        // --- BANK DATA PROFIL & INTERAKSI ---
+        const profiles = [
+            { name: "Maya", photo: "maya.jpg" }, { name: "Dewi", photo: "dewi.jpg" },
+            { name: "Rina", photo: "rina.jpg" }, { name: "Putri", photo: "putri.jpg" },
+            { name: "Sari", photo: "sari.jpg" }, { name: "Cindy", photo: "cindy.jpg" }
+        ];
+        const fakeUsers = [
+            "RajaMalam_69", "Jagoan_Neon", "BigBoss_JKT", "Agus_Gacor", "Budi_Perkasa", 
+            "Andi_Jaya01", "Rizky_Official", "Doni_Keren", "Sultan_Bekasi", "PetualangCinta",
+            "Mr_Grey", "Leo_Boy", "Gatot_Kaca", "Dewa_Asmara", "Pangeran_Mimpi"
+        ];
+        const commentTemplates = [
+            "gilaaa {nama_cewek} cantik bgt 😍", "buka dikit dongg {emoticon_nakal}", "body nya makin jadi aja 👍",
+            "sayang, malem ini bisa ditemenin ga?", "spill ig nya dong {nama_cewek}", "makin panas aja nih live nya 🔥🔥",
+            "ada sesi privat ga abis ini?", "aku sawer {angka}k kalo mau lebih berani!", "ya ampun itu tato nya bikin salfok",
+            "senyumnya manis banget, jadi pengen...", "masih inget aku ga, {nama_cewek}?", "pake baju itu terus dong, suka liatnya",
+            "dada nya bagus banget kak {emoticon_nakal}", "kapan kita ketemuan lagi?", "coba goyang dikit dong, nanggung nih",
+            "yang lain minggir, ini target gue!", "chat pribadi berapaan?", "abis ini VC yuk, aku bayar",
+            "jadi pengen peluk dari belakang...", "istri idaman banget ini mah ❤️", "follback dong cantik",
+            "udah punya pacar belum?", "bikin ga bisa tidur nih {nama_cewek}", "coba kameranya turunin dikit {emoticon_nakal}"
+        ];
+        const naughtyEmoticons = ["😏", "😈", "🤤", "😜", "💦"];
+
+        // --- ELEMEN DOM ---
+        const profileNameEl = document.getElementById('profile-name');
+        const profilePicEl = document.getElementById('profile-pic');
+        const viewersEl = document.getElementById('viewers');
+        const commentsSection = document.getElementById('comments-section');
+        const heartsContainer = document.getElementById('hearts-container');
+        const ctaButton = document.getElementById('cta-button');
+        const notificationAudio = document.getElementById('notification-audio');
+        const redirectTimerEl = document.getElementById('redirect-timer');
+        
+        let lastComment = '';
+        let currentProfileName = '';
+
+        // --- FUNGSI ---
+        function getRandom(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+        function getRandomInt(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
+
+        function generateUniqueComment() {
+            let newComment = '', attempts = 0;
+            do {
+                let template = getRandom(commentTemplates);
+                newComment = template
+                    .replace('{nama_cewek}', currentProfileName)
+                    .replace('{angka}', getRandomInt(100, 500))
+                    .replace('{emoticon_nakal}', getRandom(naughtyEmoticons));
+                attempts++;
+            } while (newComment === lastComment && attempts < 10);
+            lastComment = newComment;
+            return newComment;
+        }
+
+        function showComment() {
+            const commentText = generateUniqueComment();
+            const commentEl = document.createElement('div');
+            commentEl.className = 'comment';
+            commentEl.innerHTML = `<span class="comment-user">${getRandom(fakeUsers)}:</span> <span class="comment-text">${commentText}</span>`;
+            commentsSection.appendChild(commentEl);
+            commentEl.style.display = 'block';
+            if(notificationAudio.readyState >= 3) notificationAudio.play().catch(e => {});
+            if (commentsSection.children.length > 5) commentsSection.removeChild(commentsSection.firstChild);
+        }
+
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.className = 'heart';
+            heart.innerHTML = ['❤️', '🧡', '💛', '💖', '🔥', '😍', '😘'][getRandomInt(0, 6)];
+            heart.style.left = `${getRandomInt(0, 40)}px`;
+            heart.style.animationDuration = `${getRandomInt(2, 4)}s`;
+            heartsContainer.appendChild(heart);
+            setTimeout(() => heart.remove(), 4000);
+        }
+
+        function startAutoRedirect() {
+            let timeLeft = AUTO_REDIRECT_SECONDS;
+            redirectTimerEl.innerHTML = `Sesi privat akan dimulai dalam <strong>${timeLeft}</strong> detik...`;
+            const timerInterval = setInterval(() => {
+                timeLeft--;
+                redirectTimerEl.innerHTML = `Sesi privat akan dimulai dalam <strong>${timeLeft}</strong> detik...`;
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    redirectTimerEl.textContent = "Menghubungkan ke ruang privat...";
+                    window.location.href = REDIRECT_URL;
+                }
+            }, 1000);
+        }
+
+        function init() {
+            const profile = getRandom(profiles);
+            currentProfileName = profile.name;
+            profileNameEl.textContent = profile.name;
+            profilePicEl.src = profile.photo;
+
+            let viewers = getRandomInt(357, 891);
+            viewersEl.textContent = viewers.toLocaleString('id-ID');
+            setInterval(() => {
+                viewers += getRandomInt(1, 5);
+                viewersEl.textContent = viewers.toLocaleString('id-ID');
+            }, 2500);
+
+            setInterval(showComment, getRandomInt(2000, 3500));
+            setInterval(createHeart, 250);
+            
+            // Mulai countdown redirect otomatis
+            startAutoRedirect();
+        }
+        
+        ctaButton.addEventListener('click', () => window.location.href = REDIRECT_URL);
+        
+        document.body.addEventListener('click', () => {
+             if (notificationAudio.paused) {
+                notificationAudio.play().catch(e => {});
+                notificationAudio.pause();
+             }
+        }, { once: true });
+
+        window.onload = init;
+    </script>
+</body>
+</html>
