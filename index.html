@@ -1,64 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Select Language / Pilih Bahasa</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@700&display=swap" rel="stylesheet">
-    <style>
-        body, html {
-            margin: 0;
-            padding: 0;
-            height: 100%;
-            font-family: 'Noto Sans', sans-serif;
-            background-color: #121212;
-            color: #FFFFFF;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-        }
-        .container {
-            padding: 20px;
-        }
-        h1 {
-            font-size: 1.5rem;
-            margin-bottom: 30px;
-        }
-        .language-button {
-            display: block;
-            width: 250px;
-            padding: 20px;
-            margin: 15px auto;
-            background-color: #FE346E;
-            color: #FFFFFF;
-            text-decoration: none;
-            font-size: 1.2rem;
-            font-weight: 700;
-            border-radius: 50px;
-            border: none;
-            cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
-            box-shadow: 0 0 15px rgba(254, 52, 110, 0.5);
-        }
-        .language-button:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 25px rgba(254, 52, 110, 0.8);
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Redirecting...</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #121212;
+      color: white;
+      font-family: sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      text-align: center;
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Select Your Language <br/> / <br/> Pilih Bahasa Anda</h1>
-        <div>
-            <!-- Tombol ini akan mengarahkan ke Live.html dengan parameter bahasa Inggris -->
-            <a href="Live.html?lang=en" class="language-button">English</a>
-            
-            <!-- Tombol ini akan mengarahkan ke Live.html dengan parameter bahasa Indonesia -->
-            <a href="Live.html?lang=id" class="language-button">Bahasa Indonesia</a>
-        </div>
-    </div>
+  <div>
+    <h1>Memeriksa lokasi Anda...<br>Checking your location...</h1>
+  </div>
+
+  <script>
+    fetch("https://ipapi.co/json/")
+      .then(res => res.json())
+      .then(data => {
+        const countryCode = data.country_code.toLowerCase();
+        if (countryCode === "id") {
+          window.location.href = "Live.html?lang=id";
+        } else {
+          window.location.href = "Live.html?lang=en";
+        }
+      })
+      .catch(err => {
+        // Jika gagal deteksi IP, default ke bahasa Inggris
+        window.location.href = "Live.html?lang=en";
+      });
+  </script>
 </body>
 </html>
