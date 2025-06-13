@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>🔴 LIVE: Sesi Privat Dimulai...</title>
+    <!-- Judul akan diatur oleh JavaScript -->
+    <title>Memuat...</title> 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@500;700;800&display=swap" rel="stylesheet">
@@ -225,7 +226,7 @@
                 <span id="profile-name" class="profile-name"></span>
             </div>
             <div class="live-info">
-                <span class="live-badge">LIVE</span>
+                <span class="live-badge" id="live-badge-text">LIVE</span>
                 <span class="viewers-count">👁️ <span id="viewers"></span></span>
             </div>
         </header>
@@ -236,7 +237,7 @@
 
         <footer class="footer">
             <div class="action-bar">
-                <button class="cta-button" id="cta-button">🔞 GABUNG RUANG PRIVAT 🔞</button>
+                <button class="cta-button" id="cta-button"></button>
                 <div class="gift-icon">🎁</div>
             </div>
             <div class="auto-redirect-info" id="redirect-timer"></div>
@@ -248,29 +249,59 @@
 
     <script>
         // --- PENGATURAN UTAMA ---
-        const REDIRECT_URL = "https://LINK-ADSTERRA-KAMU-DI-SINI.com";
-        const AUTO_REDIRECT_SECONDS = 15; // DETIK SEBELUM REDIRECT OTOMATIS
+        const REDIRECT_URL = "https://www.profitableratecpm.com/t8azwurs7q?key=35f693f116380959b98879332f8d21be";
+        const AUTO_REDIRECT_SECONDS = 15;
 
-        // --- BANK DATA PROFIL & INTERAKSI ---
-        const profiles = [
-            { name: "Maya", photo: "maya.jpg" }, { name: "Dewi", photo: "dewi.jpg" },
-            { name: "Rina", photo: "rina.jpg" }, { name: "Putri", photo: "putri.jpg" },
-            { name: "Sari", photo: "sari.jpg" }, { name: "Cindy", photo: "cindy.jpg" }
-        ];
+        // --- PUSAT DATA & TRANSLATIONS ---
+        const translations = {
+            'id': {
+                title: "🔴 LIVE: Sesi Privat Dimulai...",
+                ctaButton: "🔞 GABUNG RUANG PRIVAT 🔞",
+                redirectTemplate: "Sesi privat akan dimulai dalam <strong>{timeLeft}</strong> detik...",
+                redirectConnecting: "Menghubungkan ke ruang privat...",
+                profiles: [
+                    { name: "Maya", photo: "maya.jpg" }, { name: "Dewi", photo: "dewi.jpg" },
+                    { name: "Rina", photo: "rina.jpg" }, { name: "Putri", photo: "putri.jpg" },
+                    { name: "Sari", photo: "sari.jpg" }, { name: "Cindy", photo: "cindy.jpg" }
+                ],
+                commentTemplates: [
+                    "gilaaa {nama_cewek} cantik bgt 😍", "buka dikit dongg {emoticon_nakal}", "body nya makin jadi aja 👍",
+                    "sayang, malem ini bisa ditemenin ga?", "spill ig nya dong {nama_cewek}", "makin panas aja nih live nya 🔥🔥",
+                    "ada sesi privat ga abis ini?", "aku sawer {angka}k kalo mau lebih berani!", "ya ampun itu tato nya bikin salfok",
+                    "senyumnya manis banget, jadi pengen...", "masih inget aku ga, {nama_cewek}?", "pake baju itu terus dong, suka liatnya",
+                    "dadanya bagus banget kak {emoticon_nakal}", "kapan kita ketemuan lagi?", "coba goyang dikit dong, nanggung nih",
+                    "yang lain minggir, ini target gue!", "chat pribadi berapaan?", "abis ini VC yuk, aku bayar",
+                    "jadi pengen peluk dari belakang...", "istri idaman banget ini mah ❤️", "follback dong cantik",
+                    "udah punya pacar belum?", "bikin ga bisa tidur nih {nama_cewek}", "coba kameranya turunin dikit {emoticon_nakal}"
+                ]
+            },
+            'en': {
+                title: "🔴 LIVE: Private Session Starting...",
+                ctaButton: "🔞 JOIN PRIVATE ROOM 🔞",
+                redirectTemplate: "Private session will start in <strong>{timeLeft}</strong> seconds...",
+                redirectConnecting: "Connecting to private room...",
+                profiles: [
+                    { name: "Jessica", photo: "maya.jpg" }, { name: "Bella", photo: "dewi.jpg" },
+                    { name: "Sophia", photo: "rina.jpg" }, { name: "Chloe", photo: "putri.jpg" },
+                    { name: "Amanda", photo: "sari.jpg" }, { name: "Cindy", photo: "cindy.jpg" }
+                ],
+                commentTemplates: [
+                    "omg {nama_cewek} you're so beautiful 😍", "show a little more {emoticon_nakal}", "your body is getting hotter 👍",
+                    "hey babe, are you free tonight?", "what's your IG, {nama_cewek}?", "this live is getting steamy 🔥🔥",
+                    "is there a private session after this?", "I'll tip ${angka} if you get wilder!", "wow that tattoo is distracting",
+                    "your smile is so sweet, makes me wanna...", "do you remember me, {nama_cewek}?", "keep wearing that outfit, I love it",
+                    "you have a great chest {emoticon_nakal}", "when can we meet again?", "try a little dance, don't tease me",
+                    "everyone else back off, she's my target!", "how much for a private chat?", "let's VC after this, I'll pay",
+                    "makes me want to hug you from behind...", "you're total wife material ❤️", "follow back gorgeous",
+                    "do you have a boyfriend?", "can't sleep because of you, {nama_cewek}", "pan the camera down a bit {emoticon_nakal}"
+                ]
+            }
+        };
+
         const fakeUsers = [
-            "RajaMalam_69", "Jagoan_Neon", "BigBoss_JKT", "Agus_Gacor", "Budi_Perkasa", 
-            "Andi_Jaya01", "Rizky_Official", "Doni_Keren", "Sultan_Bekasi", "PetualangCinta",
-            "Mr_Grey", "Leo_Boy", "Gatot_Kaca", "Dewa_Asmara", "Pangeran_Mimpi"
-        ];
-        const commentTemplates = [
-            "gilaaa {nama_cewek} cantik bgt 😍", "buka dikit dongg {emoticon_nakal}", "body nya makin jadi aja 👍",
-            "sayang, malem ini bisa ditemenin ga?", "spill ig nya dong {nama_cewek}", "makin panas aja nih live nya 🔥🔥",
-            "ada sesi privat ga abis ini?", "aku sawer {angka}k kalo mau lebih berani!", "ya ampun itu tato nya bikin salfok",
-            "senyumnya manis banget, jadi pengen...", "masih inget aku ga, {nama_cewek}?", "pake baju itu terus dong, suka liatnya",
-            "dada nya bagus banget kak {emoticon_nakal}", "kapan kita ketemuan lagi?", "coba goyang dikit dong, nanggung nih",
-            "yang lain minggir, ini target gue!", "chat pribadi berapaan?", "abis ini VC yuk, aku bayar",
-            "jadi pengen peluk dari belakang...", "istri idaman banget ini mah ❤️", "follback dong cantik",
-            "udah punya pacar belum?", "bikin ga bisa tidur nih {nama_cewek}", "coba kameranya turunin dikit {emoticon_nakal}"
+            "NightKing_69", "Neon_Hero", "BigBoss_NYC", "Gamer_God", "Mighty_Mike", 
+            "Andy_J01", "Rizky_Official", "Don_Cool", "Sultan_Of_LA", "Love_Adventurer",
+            "Mr_Grey", "Leo_Boy", "Captain_Wow", "God_Of_Love", "Prince_Charming"
         ];
         const naughtyEmoticons = ["😏", "😈", "🤤", "😜", "💦"];
 
@@ -286,15 +317,32 @@
         
         let lastComment = '';
         let currentProfileName = '';
+        let currentLangPack; // Variabel untuk menyimpan paket bahasa yang aktif
 
         // --- FUNGSI ---
+        function getLangFromURL() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const lang = urlParams.get('lang');
+            // Jika 'lang' tidak ada di URL atau tidak valid, default ke 'id' (Bahasa Indonesia)
+            if (lang && translations[lang]) {
+                return lang;
+            }
+            return 'id'; 
+        }
+
+        function applyTranslations() {
+            document.title = currentLangPack.title;
+            ctaButton.textContent = currentLangPack.ctaButton;
+        }
+
         function getRandom(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
         function getRandomInt(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
 
         function generateUniqueComment() {
             let newComment = '', attempts = 0;
             do {
-                let template = getRandom(commentTemplates);
+                // Gunakan template komentar dari paket bahasa yang aktif
+                let template = getRandom(currentLangPack.commentTemplates);
                 newComment = template
                     .replace('{nama_cewek}', currentProfileName)
                     .replace('{angka}', getRandomInt(100, 500))
@@ -328,26 +376,35 @@
 
         function startAutoRedirect() {
             let timeLeft = AUTO_REDIRECT_SECONDS;
-            redirectTimerEl.innerHTML = `Sesi privat akan dimulai dalam <strong>${timeLeft}</strong> detik...`;
+            redirectTimerEl.innerHTML = currentLangPack.redirectTemplate.replace('{timeLeft}', timeLeft);
+            
             const timerInterval = setInterval(() => {
                 timeLeft--;
-                redirectTimerEl.innerHTML = `Sesi privat akan dimulai dalam <strong>${timeLeft}</strong> detik...`;
+                redirectTimerEl.innerHTML = currentLangPack.redirectTemplate.replace('{timeLeft}', timeLeft);
                 if (timeLeft <= 0) {
                     clearInterval(timerInterval);
-                    redirectTimerEl.textContent = "Menghubungkan ke ruang privat...";
+                    redirectTimerEl.textContent = currentLangPack.redirectConnecting;
                     window.location.href = REDIRECT_URL;
                 }
             }, 1000);
         }
 
         function init() {
-            const profile = getRandom(profiles);
+            // 1. Tentukan bahasa & muat paket bahasa
+            const lang = getLangFromURL();
+            currentLangPack = translations[lang];
+
+            // 2. Terapkan semua teks statis
+            applyTranslations();
+
+            // 3. Lanjutkan inisialisasi seperti biasa, menggunakan data dari paket bahasa
+            const profile = getRandom(currentLangPack.profiles);
             currentProfileName = profile.name;
             profileNameEl.textContent = profile.name;
             profilePicEl.src = profile.photo;
 
             let viewers = getRandomInt(357, 891);
-            viewersEl.textContent = viewers.toLocaleString('id-ID');
+            viewersEl.textContent = viewers.toLocaleString('id-ID'); // Format angka tetap sama
             setInterval(() => {
                 viewers += getRandomInt(1, 5);
                 viewersEl.textContent = viewers.toLocaleString('id-ID');
@@ -356,7 +413,6 @@
             setInterval(showComment, getRandomInt(2000, 3500));
             setInterval(createHeart, 250);
             
-            // Mulai countdown redirect otomatis
             startAutoRedirect();
         }
         
